@@ -207,6 +207,9 @@ int main() {
 		gettimeofday(&start, nullptr);
 		bool lst_route = false, need_time = false;
 		struct rusage info;
+		getrusage(RUSAGE_CHILDREN, &info);
+		last_sys = (double)info.ru_stime.tv_sec + (double)info.ru_stime.tv_usec / 1000000.0;
+		last_usr = (double)info.ru_utime.tv_sec + (double)info.ru_utime.tv_usec / 1000000.0;
 		vector<string> samples = {}, dirs = {}, res = {};
 		vector<vector<pair<int, int>>> route = {}; // {position, <0, >1}
 		vector<vector<string>> lems = {};
@@ -220,9 +223,6 @@ int main() {
 		while (x >> word) {
 			if (check_meta_symb(word)) {
 				//получено выражение с метасимволами
-				getrusage(RUSAGE_CHILDREN, &info);
-				last_sys = (double)info.ru_stime.tv_sec + (double)info.ru_stime.tv_usec / 1000000.0;
-				last_usr = (double)info.ru_utime.tv_sec + (double)info.ru_utime.tv_usec / 1000000.0;
 				dirs.clear();
 				string lem = "";
 				int start = 0;
